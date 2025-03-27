@@ -1,5 +1,7 @@
 package com.example.sports_api.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,5 +21,6 @@ public class Atleta {
 
     @ManyToOne
     @JoinColumn(name = "modalidade_id")
+    @JsonBackReference
     private Modalidade modalidade;
 }

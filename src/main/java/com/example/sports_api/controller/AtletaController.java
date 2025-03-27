@@ -6,11 +6,15 @@ import com.example.sports_api.repository.AtletaRepository;
 import com.example.sports_api.repository.ModalidadeRepository;
 import com.example.sports_api.service.AtletaService;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -20,6 +24,7 @@ public class AtletaController {
     private final AtletaRepository atletaRepository;
     private final ModalidadeRepository modalidadeRepository;
     private final AtletaService atletaService;
+    private static final Logger logger = LoggerFactory.getLogger(AtletaController.class);
 
 
     public AtletaController(AtletaRepository atletaRepository, ModalidadeRepository modalidadeRepository, AtletaService atletaService) {
@@ -29,8 +34,20 @@ public class AtletaController {
     }
 
     @GetMapping
-    public List<Atleta> listarTodos() {
-        return atletaRepository.findAll();
+    public Page<Atleta> listarTodos(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "5") int size
+    ) {
+        logger.info("🔥 Método listarTodos() foi chamado! 🔥"); 
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<Atleta> atletas = atletaRepository.findAll(pageable);
+
+        // Depuração
+        logger.info("📌 Total de atletas encontrados: {}", atletas.getTotalElements());
+        atletas.forEach(atleta -> logger.info("➡ Nome: {}", atleta.getNome()));
+
+        return atletas;
     }
 
     @PostMapping
