@@ -5,6 +5,8 @@ import lombok.*;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,5 +21,6 @@ public class Modalidade {
     private String nome;
 
     @OneToMany(mappedBy = "modalidade", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Atleta> atletas;
 }

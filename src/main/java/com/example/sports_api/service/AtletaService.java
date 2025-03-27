@@ -4,6 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.example.sports_api.model.Atleta;
 import com.example.sports_api.repository.AtletaRepository;
+import org.springframework.stereotype.Service;
+
+@Service
 
 public class AtletaService {
     
